@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Draw</title>
+
+    <style>
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas></canvas>
+
+    <script>
+      const canvas = document.getElementsByTagName('canvas')[0];
+      const ctx = canvas.getContext('2d');
+
+      function onResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', onResize);
+      onResize();
+
+      const state = {
+        point: null,
+      };
+
+      function onMouseMove(e) {
+        ctx.beginPath();
+        ctx.moveTo(state.point.x, state.point.y);
+        ctx.lineTo(e.clientX, e.clientY);
+        ctx.stroke();
+        state.point = { x: e.clientX, y: e.clientY };
+      }
+
+      window.addEventListener('mousedown', (e) => {
+        state.point = { x: e.clientX, y: e.clientY };
+        window.addEventListener('mousemove', onMouseMove);
+      });
+
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', onMouseMove);
+      });
+    </script>
+  </body>
+</html>
